@@ -85,7 +85,7 @@ test('config',t=>{
   })
   t.test('compile',t=>{
     const result = config.compile(example)
-    // console.log(result)
+    console.log(result)
     t.ok(result.length)
     t.end()
   })

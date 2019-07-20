@@ -5,12 +5,19 @@ events, streaming capabilities and minimal boilerplate.
 ## Install
 
 ## Motivation
-Microservices can be confusing and attempting to write them can sometimes be the source of more problems 
-than they solve. This framework is a collection of conventions which give you the flexibility to create powerful
-applications while creating some constraints to keep you within good practices. This doesnt try to create a new
-programming paradigm, but allows the developer to experience writing vanilla async await javascript. Ultimately
-this attempts to remove the cognitive overhead of designing a good architecture and lets you focus on
+Microservices can be confusing to design and implement. This framework is a collection of conventions informed from 
+years of experience which give you the flexibility to create powerful
+applications while while keeping the complexity low. Many frameworks create new, strange and sometimes complex programming
+patterns. This framework doesnt do that, but allows you to write code in natural js with async/await, callbacks, event emitters 
+and streams. Ultimately we want to remove the overhead of designing a good architecture and lets you focus on
 writing application code. 
+
+## Features
+- Streaming pluggable transport layer. Works best with durable stream like Kafka or Nats-Streaming. Allows user to 
+  add new transports as long as they can be transfomed to a publish/subscribe stream.
+- Promise based interface for service to service communication but also supports streaming, listening and emitting events.
+- Very simple API, expose new services as a function which returns methods. 
+- Wiring and configuration is done with a json file and using a convention can be merged with an env to apply secret data.
 
 ## Concepts
 ### A Service
@@ -29,7 +36,8 @@ Start a service with a function signature like this:
 module.exports = async (config,services,emit)=>{
   //services return a set of functions which the outside world can call
   return {
-    print:(...args)=>console.log(...args)
+    print:(...args)=>console.log(...args),
+    echo(x){ return x }
   }
 }
 ```

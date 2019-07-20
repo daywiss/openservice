@@ -132,7 +132,7 @@ module.exports = config =>{
 
   }
 
-  function merge(...configs,path=[],result={}){
+  function merge(configs,path=[],result={}){
     const keys = lodash(configs,config=>{
       if(path.length===0){
         return lodash.keys(config)
@@ -141,9 +141,9 @@ module.exports = config =>{
       }
     }).flatten().compact().uniq().value()
 
-    const values = lodash(keys).map(key=>{
-      return lodash.map(configs,[...path,key])
-    }).flatten().value()
+    const tree = lodash.reduce(keys,key=>{
+      return [key,lodash.map(configs,[...path,key])]
+    })
 
     const value = values.reduce((result,value,i)=>{
       if(result === null) return value

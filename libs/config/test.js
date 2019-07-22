@@ -12,7 +12,7 @@ const example = {
     nats1:{
       require:'openservice-transport-nats',
     },
-    nats1:{
+    nats2:{
       require:'openservice-transport-nats',
     }
   },

@@ -1,16 +1,29 @@
 const lodash = require('lodash')
 const assert = require('assert')
+const Validate = require('../validate')
+const Schemas = require('./schemas')
+const Path = require('path')
+
 
 module.exports = config =>{
   const keys = {
-    services:'start',
+    keys:'keys',
+    start:'start',
     transports:'transports',
     transport:'transport',
     clients:'clients',
     require:'require',
     config:'config',
     path:'path',
+    name:'name',
+    cwd:'cwd',
   }
+
+  // const schemas = Schemas(keys)
+
+  // const validateConfig = Validate(schema.Config)
+  // const validateTransport = Validate(schema.Transport)
+  // const validateService = Validate(schema.Service)
 
   function makeDefaults(config){
     return {
@@ -19,6 +32,7 @@ module.exports = config =>{
       [keys.clients]:config[keys.clients],
     }
   }
+
   function findService(currPath,name,root){
     const path = [...currPath,...lodash.toPath(name)]
     if(lodash.has(root,path)) return path
@@ -46,7 +60,7 @@ module.exports = config =>{
     // assert(transport,'Transport definition missing for ' + transportid + ' in ' + strPath)
 
     let clients = config[keys.clients] || []
-    let services = config[keys.services] || []
+    let services = config[keys.start] || []
 
     let parentPath = path.slice(0,-1)
 
@@ -59,24 +73,31 @@ module.exports = config =>{
       const transportPath = findService(clientPath,keys.transport,root)
       const transportid = lodash.get(root,transportPath)
       assert(transportid,'Unable to find client transport definition: ' + name + ' in ' + strPath)
-      result[clientPath] = transportid
-      assert(result[clientPath],'Transport definition missing for ' + transportid + ' in ' + strPath)
+      result.push({
+        name:clientPath.join('.'),
+        path:clientPath,
+        transport:transportid,
+      })
+      // result[clientPath] = transportid
+      // assert(result[clientPath],'Transport definition missing for ' + transportid + ' in ' + strPath)
       return result
-    },{})
+    },[])
 
     const result = {
-      path,
+      [keys.path]:path,
+      [keys.name]:path.join('.'),
       [keys.clients]:clients,
       [keys.transport]:config[keys.transport],
-      [keys.require]:config[keys.require],
+      [keys.require]:Path.join(root[keys.cwd] || process.cwd(),config[keys.require]),
       [keys.config]:config[keys.config] || {},
     }
 
     return validateService(result,path)
   }
+
   function validateRoot(config,path){
     assert(path.length === 0,'Root path must be empty')
-    assert(config[keys.services],'requires list of services to start')
+    assert(config[keys.start],'requires list of services to start')
     assert(config[keys.transports],'requires table of at least 1 transport defined')
     return config
   }
@@ -90,6 +111,7 @@ module.exports = config =>{
     return config
   }
   function validateNamespace(config,path){
+    assert(config,'No config set for service: ' + path.toString())
     assert(path.length === 1,'Namespace paths can only be top level')
     assert(!config[keys.require],'Namespace cannot have a service file')
     return config
@@ -97,7 +119,7 @@ module.exports = config =>{
 
   function listServices(root,path=[],result=[]){
     // if(index && index > result.length) return result
-    const services = lodash.get(root,[...path,keys.services],[])
+    const services = lodash.get(root,[...path,keys.start],[])
     // console.log(path,services)
     if(services.length == 0){
       result.push(path)
@@ -158,11 +180,7 @@ module.exports = config =>{
     keys.forEach(key=>{
       merge(...configs,[...path,key],result)
     })
-
-
   }
-
-
 
   return {
     expandService,

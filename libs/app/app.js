@@ -2,7 +2,7 @@ const highland = require('highland')
 const lodash = require('lodash')
 const Promise = require('bluebird')
 const assert = require('assert')
-const Transports = require('../transports')
+const Transports = require('../transport')
 const Service = require('../service')
 const Config = require('../config')
 
@@ -17,7 +17,7 @@ module.exports = async config => {
   transports = await Promise.props(transports)
 
   return Promise.map(compile(config),config=>{
-    return Services(config,transports)
+    return Service(require(config.require),config,transports)
   })
 }
 

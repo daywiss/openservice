@@ -1,13 +1,18 @@
 module.exports = {
+  name:'basic',
+  cwd:process.cwd(),
   transports:{
     local:{
-      require:'openservice-transport-local',
+      require:'local',
     }
   },
-  services:[
-    'express',
+  start:[
+    'basic.service',
   ],
-  express:{
-    require:'./express'
+  basic:{
+    service:{
+      transport:'local',
+      require:'basic'
+    }
   }
 }

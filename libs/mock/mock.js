@@ -26,27 +26,29 @@ function PathProxy(cb, path = []) {
     apply(target, thisArg, args) {
       return cb('apply',path, args)
     },
-    construct(){
-      throw new Error('construct not supported in mock')
-    },
-    defineProperty(){
-      throw new Error('defineProperty not supported in mock')
-    },
-    getOwnPropertyDescriptor(){
-      throw new Error('getOwnPropertyDescriptor not supported in mock')
-    },
-    getPrototypeOf(){
-      throw new Error('getPrototypeOf not supported in mock')
-    },
-    ownKeys(){
-      throw new Error('ownKeys not supported in mock')
-    },
-    preventExtension(){
-      throw new Error('preventExtension not supported in mock')
-    },
-    setPrototypeOf(){
-      throw new Error('setPrototypeOf not supported in mock')
-    },
+    // construct(){
+    //   throw new Error('construct not supported in mock')
+    // },
+    // defineProperty(){
+    //   throw new Error('defineProperty not supported in mock')
+    // },
+    // getOwnPropertyDescriptor(){
+    //   throw new Error('getOwnPropertyDescriptor not supported in mock')
+    // },
+    // getPrototypeOf(...args){
+    //   return cb('getPrototypeOf',path,...args)
+      // console.log(args.toString())
+      // throw new Error('getPrototypeOf not supported in mock')
+    // },
+    // ownKeys(){
+    //   throw new Error('ownKeys not supported in mock')
+    // },
+    // preventExtension(){
+    //   throw new Error('preventExtension not supported in mock')
+    // },
+    // setPrototypeOf(){
+    //   throw new Error('setPrototypeOf not supported in mock')
+    // },
   }
   return new Proxy(x => x, handlers)
 }

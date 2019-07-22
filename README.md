@@ -17,17 +17,18 @@ writing application code.
   add new transports as long as they can be transfomed to a publish/subscribe stream.
 - Promise based interface for service to service communication but also supports streaming, listening and emitting events.
 - Very simple API, expose new services as a function which returns methods. 
-- Wiring and configuration is done with a json file and using a convention can be merged with an env to apply secret data.
+- Seperates wiring and secrets. Wiring can be persisted in repo, secrets can be merged through envs.
+- Very easy usage with docker and kubernetes
 
 ## Concepts
 ### A Service
-Services are the primary concern of a framework like this. They have no concept of transport a layer and are
-isolated from other services. Services can be called through functions, call other services or emit messages.
-These conventions are useful not only for services but libraries or classes in general and allows
-for great testability. 
+In this framework a service is a single function which returns some methods. This is similar to a class but
+we can asyncronously instantiate and have true private functions and data. The service is passed in
+a config object, a special client which can access other services, and a function it can call to emit events.
+This convention is useful not only for services but libraries or classes in general and allows for flexibilty
+and testability of the service. 
 
-
-Start a service with a function signature like this:
+Create a service with a function signature like this:
 
 ```js
 //services are exposed as an asyncronous function with some standard parameters.
@@ -36,7 +37,7 @@ Start a service with a function signature like this:
 module.exports = async (config,services,emit)=>{
   //services return a set of functions which the outside world can call
   return {
-    print:(...args)=>console.log(...args),
+    print(...args)=>console.log(...args),
     echo(x){ return x }
   }
 }

@@ -52,7 +52,8 @@ module.exports = async (Service,config={},transports)=>{
     timeoutms,
     'Service Timeout On Init: ' + config.name + ' after ' + timeout + 'ms'
   )
-  const utils = {
+
+  service.utils = {
     id(){
       return config.name
     },
@@ -75,7 +76,7 @@ module.exports = async (Service,config={},transports)=>{
 
   const transport = lodash.get(transports,config.transport)
   assert(transport,'Transport is not defined: ' + config.transport)
-  const server = Server(config, {...utils,...service}, transport)
+  const server = Server(config, service, transport)
   events.each(args=> server.emit(...args))
   
   return Client(config, transport, config.name)

@@ -88,7 +88,7 @@ module.exports = config =>{
       [keys.name]:path.join('.'),
       [keys.clients]:clients,
       [keys.transport]:config[keys.transport],
-      [keys.require]:Path.join(root[keys.cwd] || process.cwd(),config[keys.require]),
+      [keys.require]:Path.join(root[keys.cwd] || '',config[keys.require]),
       [keys.config]:config[keys.config] || {},
     }
 

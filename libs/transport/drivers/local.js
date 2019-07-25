@@ -1,7 +1,7 @@
 const highland = require('highland')
 const lodash = require('lodash')
 
-module.exports = config => {
+module.exports = async config => {
   const transports = {}
   const publishers = new Map()
   const subscribers = new Map()

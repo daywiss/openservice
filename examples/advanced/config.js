@@ -4,8 +4,6 @@ module.exports = {
     'advanced',
   ],
   //add both directories to search for required files
-  //cwd supplies directory where app was started
-  //__dirname supplies directory of file requiring path
   paths:[__dirname,process.cwd()],
   transports:{
     local:{

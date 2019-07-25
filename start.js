@@ -1,9 +1,9 @@
 require('dotenv').config()
-const { parseEnv } = require('utils')
+const { parseEnv } = require('./libs/utils')
 const args = require('minimist')(process.argv.slice(2))
 const assert = require('assert')
 const lodash = require('lodash')
-const App = require('../app')
+const App = require('./libs/app')
 
 const paths = args._ || []
 

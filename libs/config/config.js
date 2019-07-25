@@ -73,6 +73,7 @@ module.exports = config =>{
       const transportPath = findService(clientPath,keys.transport,root)
       const transportid = lodash.get(root,transportPath)
       assert(transportid,'Unable to find client transport definition: ' + name + ' in ' + strPath)
+
       result.push({
         name:clientPath.join('.'),
         path:clientPath,
@@ -88,7 +89,7 @@ module.exports = config =>{
       [keys.name]:path.join('.'),
       [keys.clients]:clients,
       [keys.transport]:config[keys.transport],
-      [keys.require]:Path.join(root[keys.cwd] || '',config[keys.require]),
+      [keys.require]:config[keys.require],
       [keys.config]:config[keys.config] || {},
     }
 

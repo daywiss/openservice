@@ -1,11 +1,15 @@
 module.exports = {
+  name:'advanced',
   start:[
     'advanced',
   ],
-  cwd:process.cwd(),
+  //add both directories to search for required files
+  //cwd supplies directory where app was started
+  //__dirname supplies directory of file requiring path
+  paths:[__dirname,process.cwd()],
   transports:{
     local:{
-      require:'local',
+      require:'transport',
     },
   },
   config:{},
@@ -21,12 +25,12 @@ module.exports = {
       // 'express'
     ],
     wallets:{
-      require:'./wallets',
+      require:'wallets',
       config:{ },
       clients:[]
     },
     transactions:{
-      require:'./transaction',
+      require:'transaction',
       config:{ },
       clients:['wallets']
     },
@@ -36,7 +40,7 @@ module.exports = {
       clients:['wallets','transactions'],
     },
     express:{
-      require:'./express',
+      require:'express',
       config:{ },
       clients:['actions'],
     },

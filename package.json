@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "bluebird": "^3.5.5",
+    "dotenv": "^8.0.0",
     "fastest-validator": "^0.6.17",
     "highland": "^2.13.4",
     "lodash": "^4.17.15",

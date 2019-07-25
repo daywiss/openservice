@@ -1,6 +1,6 @@
 module.exports = {
   name:'basic',
-  cwd:process.cwd(),
+  cwd:__dirname,
   transports:{
     local:{
       require:'local',

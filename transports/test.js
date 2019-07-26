@@ -1,13 +1,11 @@
 const test = require('tape')
-const Transport = require('.')
+const Local = require('./local')
 
 test('transport',t=>{
   let transport
   t.test('local',t=>{
-    t.test('init',t=>{
-      transport = Transport('local')
-      t.ok(transport)
-      transport = transport()
+    t.test('init',async t=>{
+      transport = await Local()
       t.ok(transport)
       t.end()
     })

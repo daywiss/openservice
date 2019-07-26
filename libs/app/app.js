@@ -2,7 +2,6 @@ const highland = require('highland')
 const lodash = require('lodash')
 const Promise = require('bluebird')
 const assert = require('assert')
-const Transports = require('../transport')
 const Service = require('../service')
 const Config = require('../config')
 

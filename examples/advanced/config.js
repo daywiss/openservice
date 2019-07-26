@@ -4,10 +4,16 @@ module.exports = {
     'advanced',
   ],
   //add both directories to search for required files
-  paths:[__dirname,process.cwd()],
+  paths:[__dirname,process.cwd(),process.cwd() + '/transports'],
   transports:{
     local:{
-      require:'transport',
+      require:'local'
+      // require:'natss',
+      // config:{
+      //   url:'nats://localhost:4223',
+      //   clusterid:'test-cluster',
+      //   clientid:'open-service',
+      // }
     },
   },
   config:{},

@@ -53,6 +53,10 @@ module.exports = (config, transport, service) => {
 
     if(type !== 'apply') return 
 
+    if(path.length === 1 && path[0] === 'on'){
+      return listenStream.listen(...args)
+    }
+
     switch (fun) {
       case emit:
         return emitStream.call(prefix, ...args)

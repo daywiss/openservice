@@ -10,8 +10,6 @@ module.exports = (channel = 'responses') => {
   const listen = (path, cb) => {
     const filter = { channel }
 
-    // console.log('INITALIZE.LISTEN.PATH', path)
-
     if (path && path.length) {
       path = lodash.castArray(path)
       filter.path = path

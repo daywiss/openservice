@@ -21,9 +21,13 @@ exports.objectFilter = (filter = {}) => obj => {
       value = lodash.castArray(value)
       //check the object for the key
       const check = lodash.get(obj, key)
-      // console.log(obj,filter)
+
       if (lodash.isArray(check)) {
         if (check.length === 0 && value.length === 0) return true
+        //this is saying if we specified an empty array to filter
+        //only match if the event has an empty array
+        // console.log('filter',filter,'check',check,'key',key,'value',value)
+        if (value.length === 0) return false
         // return lodash.intersection(check, value).length > 0
         // check each value in the path to ensure complete match.
         return value.reduce((result, val, i) => {
@@ -36,6 +40,30 @@ exports.objectFilter = (filter = {}) => obj => {
     },
     true
   )
+  //return lodash.reduce(
+  //  filter,
+  //  (result, value, key) => {
+  //    //did the filter pass
+  //    if (result === false) return false
+  //    //cast filter params to an array
+  //    value = lodash.castArray(value)
+  //    //check the object for the key
+  //    const check = lodash.get(obj, key)
+  //    // console.log(obj,filter)
+  //    if (lodash.isArray(check)) {
+  //      if (check.length === 0 && value.length === 0) return true
+  //      // return lodash.intersection(check, value).length > 0
+  //      // check each value in the path to ensure complete match.
+  //      return value.reduce((result, val, i) => {
+  //        if (val == check[i]) return result
+  //        return false
+  //      }, true)
+  //    } else {
+  //      return value.includes(check)
+  //    }
+  //  },
+  //  true
+  //)
 }
 
 exports.timeout = (promise, delay, message) => {

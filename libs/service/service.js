@@ -1,7 +1,7 @@
 const assert = require('assert')
 const lodash = require('lodash')
 const moment = require('moment')
-const highland = require('highland')
+const Events = require('events')
 
 const Client = require('../client')
 const Server = require('../server')
@@ -46,9 +46,9 @@ module.exports = async (Service,config={},transports)=>{
   //     return result
   // },{})
 
-  const events = highland()
+  const events = new Events()
   let service = await timeout(
-    Service(config, clients, (...args)=>events.write(args)),
+    Service(config.config, clients, (...args)=>events.emit('event',args)),
     timeoutms,
     'Service Timeout On Init: ' + config.name + ' after ' + timeout + 'ms'
   )
@@ -67,7 +67,7 @@ module.exports = async (Service,config={},transports)=>{
       console.log(...args)
     },
     shutdown(ms=1000){
-      events.write(['shutdown',ms])
+      events.emit('event',['shutdown',ms])
       setTimeout(x => {
         process.exit()
       }, ms)
@@ -77,7 +77,7 @@ module.exports = async (Service,config={},transports)=>{
   const transport = lodash.get(transports,config.transport)
   assert(transport,'Transport is not defined: ' + config.transport)
   const server = Server(config, service, transport)
-  events.each(args=> server.emit(...args))
+  events.on('event',args=> server.emit(...args))
   
   return Client(config, transport, config.name)
 }

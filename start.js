@@ -4,13 +4,14 @@ const args = require('minimist')(process.argv.slice(2))
 const assert = require('assert')
 const lodash = require('lodash')
 const App = require('./libs/app')
+const Path = require('path')
 
 const paths = args._ || []
 
 let config = lodash.reduce(
   paths,
   (result, fn) => {
-    return lodash.merge(result, require('./' + fn))
+    return lodash.merge(result, Path.resolve(process.cwd(),fn))
   },
   {}
 )

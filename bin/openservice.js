@@ -1,9 +1,11 @@
+#!/usr/bin/env node
+
 require('dotenv').config()
-const { parseEnv } = require('./libs/utils')
+const { parseEnv } = require('../libs/utils')
 const args = require('minimist')(process.argv.slice(2))
 const assert = require('assert')
 const lodash = require('lodash')
-const App = require('./libs/app')
+const App = require('../libs/app')
 const Path = require('path')
 
 const paths = args._ || []
@@ -11,7 +13,8 @@ const paths = args._ || []
 let config = lodash.reduce(
   paths,
   (result, fn) => {
-    return lodash.merge(result, Path.resolve(process.cwd(),fn))
+    const path =  Path.resolve(process.cwd(),fn)
+    return lodash.merge(result,require(path))
   },
   {}
 )

@@ -33,45 +33,36 @@ module.exports = async (Service,config={},transports)=>{
   },{})
 
 
-  // const clients = lodash.reduce(clientNames,(result,name)=>{
-  //     const path = relativePath(name)
-  //     assert(
-  //       !lodash.has(result, path),
-  //       'Conflict between service client names: ' +
-  //         path +
-  //         ' in ' +
-  //         config.name,
-  //     )
-  //     lodash.set(result, path, Client({name}, transport, config.name))
-  //     return result
-  // },{})
-
   const events = new Events()
   let service = await timeout(
     Service(config.config, clients, (...args)=>events.emit('event',args)),
     timeoutms,
-    'Service Timeout On Init: ' + config.name + ' after ' + timeout + 'ms'
+    'Service Timeout On Init: ' + config.name + ' after ' + timeoutms + 'ms'
   )
 
-  service.utils = {
-    id(){
-      return config.name
-    },
-    discover(){
-      return lodash.keys(service)
-    },
-    echo(x){
-      return x
-    },
-    log(...args){
-      console.log(...args)
-    },
-    shutdown(ms=1000){
-      events.emit('event',['shutdown',ms])
-      setTimeout(x => {
-        process.exit()
-      }, ms)
-    },
+  if(!service) return
+
+  if(lodash.isObject(service)){
+    service.utils = {
+      id(){
+        return config.name
+      },
+      discover(){
+        return lodash.keys(service)
+      },
+      echo(x){
+        return x
+      },
+      log(...args){
+        console.log(...args)
+      },
+      shutdown(ms=1000){
+        events.emit('event',['shutdown',ms])
+        setTimeout(x => {
+          process.exit()
+        }, ms)
+      },
+    }
   }
 
   const transport = lodash.get(transports,config.transport)

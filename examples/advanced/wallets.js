@@ -49,5 +49,6 @@ module.exports = config => {
     set,
     get,
     create,
+    config:x=>config,
   }
 }

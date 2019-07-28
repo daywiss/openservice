@@ -16,12 +16,15 @@ module.exports = async config => {
   const {compile} = Config(config.config)
 
   let transports = lodash.mapValues(config.transports,(value,key)=>{
-    return require.main.require(value.require)(value.config)
+    assert(value.require,`Transport ${key} missing "require" field to specify file`)
+    const transport = require.main.require(value.require)
+    assert(transport,'Transport file not found')
+    return transport(value.config)
   })
 
   transports = await Promise.props(transports)
 
-  return Promise.map(compile(config),config=>{
+  return Promise.mapSeries(compile(config),config=>{
     return Service(require.main.require(config.require),config,transports)
   })
 }

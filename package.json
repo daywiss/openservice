@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "daywiss <daywiss@gmail.com>",
   "license": "MIT",
+  "bin": {
+    "openservice": "./bin/openservice.js"
+  },
   "devDependencies": {
     "tape": "^4.10.2"
   },
@@ -13,6 +16,7 @@
     "fastest-validator": "^0.6.17",
     "highland": "^2.13.4",
     "lodash": "^4.17.15",
+    "minimist": "^1.2.0",
     "moment": "^2.24.0",
     "stack-utils": "^1.0.2",
     "uuid": "^3.3.2"

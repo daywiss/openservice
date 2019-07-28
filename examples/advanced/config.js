@@ -3,40 +3,45 @@ module.exports = {
   start:[
     'advanced',
   ],
+  config:{
+    test:'test',
+  },
   //add both directories to search for required files
   paths:[__dirname,process.cwd(),process.cwd() + '/transports'],
   transports:{
     local:{
       require:'local'
-      // require:'natss',
-      // config:{
-      //   url:'nats://localhost:4223',
-      //   clusterid:'test-cluster',
-      //   clientid:'open-service',
-      // }
     },
+    natss:{
+      require:'natss',
+      config:{
+        url:'nats://localhost:4223',
+        clusterid:'test-cluster',
+        clientid:'open-service',
+      }
+    }
   },
-  config:{},
   start:[
     'advanced'
   ],
   advanced:{
-    transport:'local',
     start:[
-      'wallets',
+      'transactions.wallets',
       'transactions',
       // 'actions',
       // 'express'
     ],
-    wallets:{
-      require:'wallets',
-      config:{ },
-      clients:[]
-    },
     transactions:{
+      transport:'natss',
       require:'transaction',
       config:{ },
-      clients:['wallets']
+      clients:['wallets'],
+      wallets:{
+        transport:'local',
+        require:'./wallets',
+        config:{ },
+        clients:[]
+      },
     },
     actions:{
       require:'./actions',

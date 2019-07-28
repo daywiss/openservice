@@ -25,12 +25,12 @@ module.exports = config =>{
   // const validateTransport = Validate(schema.Transport)
   // const validateService = Validate(schema.Service)
 
-  function makeDefaults(config){
-    return {
+  function makeDefaults(config,previous){
+    return lodash.defaultsDeep({
       [keys.transport]:config[keys.transport],
       [keys.config]:config[keys.config],
       [keys.clients]:config[keys.clients],
-    }
+    },previous)
   }
 
   function findService(currPath,name,root){
@@ -47,7 +47,7 @@ module.exports = config =>{
     assert(path.length > 1,'Service require a namespace: ' + strPath)
 
     let config = lodash.get(root,path)
-    config = lodash.defaults(config,defaults)
+    config = lodash.defaultsDeep(config,defaults)
 
     const transports = root[keys.transports]
     let transportid = config[keys.transport]
@@ -134,27 +134,6 @@ module.exports = config =>{
     return result
   }
 
-  function compile(root,path=[],stack=[],result=[]){
-    assert(root,'requires full config object')
-    validateRoot(root,path)
-
-    const paths = listServices(root)
-
-    const {list} = paths.reduce((result,path)=>{
-      if(path.length == 1){
-        result.default = makeDefaults(validateNamespace(lodash.get(root,path),path))
-      }else{
-        const expanded = expandService(result.services,path,result.default)
-        lodash.set(result.services,path,expanded)
-        result.list.push(expanded)
-      }
-      return result
-    },{default:makeDefaults(root),services:lodash.cloneDeep(root),list:[]})
-
-    return list
-
-  }
-
   function merge(configs,path=[],result={}){
     const keys = lodash(configs,config=>{
       if(path.length===0){
@@ -181,6 +160,27 @@ module.exports = config =>{
     keys.forEach(key=>{
       merge(...configs,[...path,key],result)
     })
+  }
+
+  function compile(root,path=[],stack=[],result=[]){
+    assert(root,'requires full config object')
+    validateRoot(root,path)
+
+    const paths = listServices(root)
+
+    const {list} = paths.reduce((result,path)=>{
+      if(path.length == 1){
+        result.default = makeDefaults(validateNamespace(lodash.get(root,path),path),result.default)
+      }else{
+        const expanded = expandService(result.services,path,result.default)
+        lodash.set(result.services,path,expanded)
+        result.list.push(expanded)
+      }
+      return result
+    },{default:makeDefaults(root),services:lodash.cloneDeep(root),list:[]})
+
+    return list
+
   }
 
   return {

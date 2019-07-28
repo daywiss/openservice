@@ -21,9 +21,6 @@ module.exports = {
       }
     }
   },
-  start:[
-    'advanced'
-  ],
   advanced:{
     start:[
       'transactions.wallets',

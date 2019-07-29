@@ -10,6 +10,73 @@ You must have a configuration file, env, or json and your service code. See the 
 
 `openservice config.js`
 
+## Quick Start
+Quick reference for getting started.
+### Service Definition
+
+```js
+//in service.js
+module.exports = async (config,services,emit)=>{
+  return {
+  }
+}
+
+```
+### Config Definition
+```js
+//in config.js
+module.exports = {
+  name:'quickstart',
+  paths:[process.cwd()],
+  start:[
+    'quickstart.service'
+  ],
+  transports:{
+    local:{
+      require:'openservice/transports/local'
+    },
+    natss:{
+      require:'openservice/transports/natss'
+      config:{
+        clusterid:'test-cluster',
+        clientid:'quickstart',
+      }
+    }
+  },
+  quickstart:{
+    service:{
+      require:'service',
+      transport:'local',
+      clients:[],
+      config:{},
+    }
+  }
+}
+```
+
+### Secret ENV
+In .env file or environment variables
+```
+quickstart.natss.config.url=nats://localhost:4223
+quickstart.service.config.secret=12345
+```
+
+### Starting Service
+From the command line:
+`openservice config.js`
+
+Or from within a js file
+```js
+const OpenService = require('openservice')
+const config = require('./config')
+
+OpenService(config).then(([service])=>{
+  console.log('Services started')
+}).catch(err=>console.log(err)
+
+```
+
+
 ## Features
 - Streaming pluggable transport layer. Works best with durable stream like Kafka or Nats-Streaming. Allows user to 
   add new transports as long as they can be transfomed to a publish/subscribe stream. 
@@ -244,6 +311,12 @@ module.exports = async (config,services)=>{
 
 ### Starting Services
 Services start through the openservice app and pass it a config file, .env or environment variables.
+This is as simple as running the app and passing in your configuration files. These
+files are optional as the entire configuration can be defined through environment variables.
+As complexity of the project grows, its recommended you break out wiring into commitable files
+vs secrets as environment variables.
+
+`openservice ./service-config.js ./service-secrets.js`
 
 #### The Configuration File
 Configs can be represented through env vars or through a JS object. The configuration tells openservice
@@ -273,6 +346,53 @@ config:object,    //configuration object passed into this service
 ```
 
 See examples/basic/config.js or examples/advanced/config.js
+
+#### Environment and Secrets
+Environment variables are very important for configuring your services and this architecture accepts a 
+convention for injecting variables into your service defintion. For example if you need to pass sensitive
+data you do not want committed to your project you can specify it in an .env file or your env variables.
+The convetion for injecting variables follows lodash's `set` interface. Furthermore the architecture
+will ignore any envs which begin with an uppercase, so only lowercase envs will be observed. In practice it
+produces something like this:
+
+```
+express.cookieSecret=1234qwerty
+users.username=admin
+users.password=qwerty
+auth.systemToken=abcdefg
+```
+
+These key strings get parsed and merged into your configuration object using lodash's set producing this 
+ultimate configuration:
+
+```
+{
+  ...,
+  users:{
+   file:'./services/users', 
+   clients:[],
+   //additional configuration for database table
+   table:'users',
+   //merged from env:
+   username:'admin',
+   password:'querty',
+  },
+  auth:{
+   file:'./services/auth', 
+   clients:['users'],
+   //merged from env:
+   systemToken:abcdefg
+  },
+  express:{
+   file:'./services/express', 
+   clients:['api'],
+   port:80,
+   //merged from env:
+   cookieSecret:1234qwerty
+  },
+  ...
+}
+```
 
 ### Transports
 In order to do a lot of interesting microservice stuff the architecture has abstracted the transport into
@@ -403,60 +523,6 @@ module.exports = {
 
 ```
 
-### Environment and Secrets
-Environment variables are very important for configuring your services and this architecture accepts a 
-convention for injecting variables into your service defintion. For example if you need to pass sensitive
-data you do not want committed to your project you can specify it in an .env file or your env variables.
-The convetion for injecting variables follows lodash's `set` interface. Furthermore the architecture
-will ignore any envs which begin with an uppercase, so only lowercase envs will be observed. In practice it
-produces something like this:
-
-```
-express.cookieSecret=1234qwerty
-users.username=admin
-users.password=qwerty
-auth.systemToken=abcdefg
-```
-
-These key strings get parsed and merged into your configuration object using lodash's set producing this 
-ultimate configuration:
-
-```
-{
-  ...,
-  users:{
-   file:'./services/users', 
-   clients:[],
-   //additional configuration for database table
-   table:'users',
-   //merged from env:
-   username:'admin',
-   password:'querty',
-  },
-  auth:{
-   file:'./services/auth', 
-   clients:['users'],
-   //merged from env:
-   systemToken:abcdefg
-  },
-  express:{
-   file:'./services/express', 
-   clients:['api'],
-   port:80,
-   //merged from env:
-   cookieSecret:1234qwerty
-  },
-  ...
-}
-```
-
-### Running an application
-This is as simple as running the app and passing in your configuration files. These
-files are optional as the entire configuration can be defined through environment variables.
-As complexity of the project grows, its recommended you break out wiring into commitable files
-vs secrets as environment variables.
-
-`node start ./service-config.js ./service-secrets.js`
 
 ### Data Modeling
 A micro service architecture is really only as good as your data architecture, so we suggest some conventions

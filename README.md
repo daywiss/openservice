@@ -57,7 +57,7 @@ module.exports = {
 ### Secret ENV
 In .env file or environment variables
 ```
-quickstart.natss.config.url=nats://localhost:4223
+transports.natss.config.url=nats://localhost:4223
 quickstart.service.config.secret=12345
 ```
 

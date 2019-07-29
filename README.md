@@ -524,14 +524,5 @@ module.exports = {
 ```
 
 
-### Data Modeling
-A micro service architecture is really only as good as your data architecture, so we suggest some conventions
-for avoiding bottlenecks. 
-
-
-
-
-
-
 
 

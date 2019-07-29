@@ -1,12 +1,32 @@
 {
   "name": "openservice",
   "version": "0.0.1",
+  "description": "Flexible easy to use microservice framework on streams",
   "main": "index.js",
-  "author": "daywiss <daywiss@gmail.com>",
+  "author": "david <daywiss@gmail.com>",
   "license": "MIT",
   "bin": {
     "openservice": "./bin/openservice.js"
   },
+  "bugs":{
+    "url":"https://github.com/daywiss/openservice/issues"
+  },
+  "homepage":{
+    "url":"https://github.com/daywiss/openservice"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daywiss/openservice.git"
+  },
+  "keywords": [
+    "services",
+    "microservices",
+    "streams",
+    "servers",
+    "framework",
+    "events",
+    "cqrs"
+  ],
   "devDependencies": {
     "tape": "^4.10.2"
   },

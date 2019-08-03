@@ -7,7 +7,6 @@ const assert = require('assert')
 const moment = require('moment')
 
 module.exports = (config, transport, service) => {
-  console.log('making client',service,config.name)
   const {name,old=10000,emit='emit',listen='listen'} = config
   assert(name, 'requires name')
   assert(transport, 'requires transport')

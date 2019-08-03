@@ -18,7 +18,6 @@ module.exports = async (Service,config={},transports)=>{
   const relativePath = RelativePath(servicePath)
 
   const clients = config.clients.reduce((result,client)=>{
-    console.log(config.name,client.path)
     const path = relativePath(client.path)
     const transport = lodash.get(transports,client.transport)
     assert(transport,'transport configuration not defined for: ' + client.transport)

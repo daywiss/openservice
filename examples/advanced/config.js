@@ -1,7 +1,9 @@
 module.exports = {
   name:'advanced',
   start:[
-    'advanced',
+    // 'advanced',
+    'advanced.transactions',
+    'advanced.transactions.wallets',
   ],
   config:{
     test:'test',
@@ -22,12 +24,6 @@ module.exports = {
     }
   },
   advanced:{
-    start:[
-      'transactions.wallets',
-      'transactions',
-      // 'actions',
-      // 'express'
-    ],
     transactions:{
       transport:'natss',
       require:'transaction',

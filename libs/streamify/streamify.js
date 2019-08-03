@@ -5,7 +5,7 @@ const assert = require('assert')
 const Events = require('../events')
 const utils = require('../utils')
 
-function Wrap(methods, cb) {
+function Wrap(name, methods, cb) {
   return async function(event) {
     try {
       const { path, id, args } = event
@@ -16,21 +16,10 @@ function Wrap(methods, cb) {
         assert(lodash.isFunction(methods), 'Root path is not a function')
         call = methods
       }
-      // console.log('streamify call',path,args)
       if (!lodash.isFunction(call)) {
-        console.log(
-          'calling invalid function',
-          JSON.stringify(event, undefined, 2)
-        )
-        throw new Error(
-          'Invalid call on ' +
-            JSON.stringify(path.toString()) +
-            ' ' +
-            JSON.stringify(args.toString())
-        )
+        throw new Error(`Call to non existent function on ${name}.${path.join('.')}(${JSON.stringify(args)})`)
       }
       const resolve = await call(...args)
-      // console.log('streamify result',path,args,resolve)
       if (highland.isStream(resolve)) {
         resolve
           .doto(x => {
@@ -43,13 +32,12 @@ function Wrap(methods, cb) {
         cb('responses', resolve, event)
       }
     } catch (reject) {
-      // console.log('stremify error',{reject,event})
       cb('errors', utils.parseError(reject), event)
     }
   }
 }
 
-module.exports = methods => {
+module.exports = (name,methods) => {
   const errors = highland()
   // .filter(x=>{
   //   return x.channel == 'errors'
@@ -63,7 +51,7 @@ module.exports = methods => {
   //   return x.channel == 'streams'
   // })
 
-  const wrap = Wrap(methods, (channel, result, event) => {
+  const wrap = Wrap(name,methods, (channel, result, event) => {
     const msg = {
       id: event.id,
       channel,

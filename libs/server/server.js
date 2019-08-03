@@ -20,7 +20,7 @@ module.exports = (config, service, transport) => {
   const streams = transport.publish(name, 'streams')
   const errors = transport.publish(name, 'errors')
 
-  const serviceStream = Streamify(service)
+  const serviceStream = Streamify(name,service)
 
   requests.pipe(serviceStream.requests)
   serviceStream.responses.pipe(responses)

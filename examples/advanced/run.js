@@ -1,7 +1,7 @@
 const App = require('../..')
 const config = require('./config')
 
-App(config).then(async ([wallets,transactions,actions,express])=>{
+App(config).then(async ([transactions,wallets,actions,express])=>{
   transactions.deep.change.listen(result=>{
     console.log('tx listen change',result)
   })

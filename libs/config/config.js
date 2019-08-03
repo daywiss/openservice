@@ -121,7 +121,6 @@ module.exports = config =>{
   function listServices(root,path=[],result=[]){
     // if(index && index > result.length) return result
     const services = lodash.get(root,[...path,keys.start],[])
-    // console.log(path,services)
     if(services.length == 0){
       result.push(path)
       return result
@@ -172,7 +171,8 @@ module.exports = config =>{
       if(path.length == 1){
         result.default = makeDefaults(validateNamespace(lodash.get(root,path),path),result.default)
       }else{
-        const expanded = expandService(result.services,path,result.default)
+        // const expanded = expandService(result.services,path,result.default)
+        const expanded = expandService(root,path,result.default)
         lodash.set(result.services,path,expanded)
         result.list.push(expanded)
       }

@@ -187,33 +187,6 @@ exports.parseError = err => {
   }
 }
 
-exports.decodeExpresstradeOffer = (offer, type) => {
-  assert(offer, 'requires expresstrade offer')
-  assert(type, 'requires trade type')
-
-  switch (offer.state) {
-    //offer accpeted
-    case 3:
-      return `${type} Accepted`
-    //expired
-    case 5:
-      throw new Error(`${type} Expired`)
-    //cancelled
-    case 6:
-      throw new Error(`${type} Cancelled`)
-    //declined
-    case 7:
-      throw new Error(`${type} Declined`)
-    //invalid items
-    case 8:
-      throw new Error(`Invalid Items`)
-    case 10:
-      throw new Error(`Expired Case Open`)
-    case 12:
-      throw new Error(`Failed Case Open`)
-  }
-}
-
 exports.RelativePath = mypath => path => {
   return path.reduce((result, part, i) => {
     if (result.length > 0 || mypath[i] !== part) result.push(part)
@@ -221,26 +194,6 @@ exports.RelativePath = mypath => path => {
   }, [])
 }
 
-exports.makeGameUser = (user, defaultImage) => {
-  return {
-    level: user.level || 0,
-    id: user.id,
-    name:
-      user.username ||
-      lodash.get(user, 'steam.username', user.steamid) ||
-      lodash.get(user, 'opskins.username'),
-    image: user.avatar || lodash.get(user, 'steam.avatar.medium', defaultImage),
-  }
-}
-
-exports.makeGameItem = item => {}
-
-// exports.relativeObject = mypath => obj => {
-//   const relativePath = exports.relativePath(mypath)
-//   return lodash.reduce(obj,(result,value,key)=>{
-//     const path = relativePath
-//   },{})
-// }
 
 exports.paginate = function(collection = [], page = 1, numItems = 100) {
   assert(collection, 'the provided collection is not an array!')

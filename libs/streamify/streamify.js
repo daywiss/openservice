@@ -19,7 +19,8 @@ function Wrap(name, methods, cb) {
       if (!lodash.isFunction(call)) {
         throw new Error(`Call to non existent function on ${name}.${path.join('.')}(${JSON.stringify(args)})`)
       }
-      const resolve = await call(...args)
+      const resolve = await call.apply(methods,args)
+
       if (highland.isStream(resolve)) {
         resolve
           .doto(x => {

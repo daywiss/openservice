@@ -12,6 +12,8 @@ module.exports = async (Service,config={},transports)=>{
   const {timeoutms=60000} = config
   assert(config.path !== undefined, 'service requires path')
   assert(transports,'requires transports')
+  assert(Service,'Service not found for: ' + config.path)
+  assert(lodash.isFunction(Service),'Service is not a function: ' + config.path)
 
   // const clientNames = lodash.castArray(config.clients || [])
   const servicePath = config.path
@@ -40,7 +42,7 @@ module.exports = async (Service,config={},transports)=>{
     'Service Timeout On Init: ' + config.name + ' after ' + timeoutms + 'ms'
   )
 
-  if(!service) return
+  service = service || {}
 
   if(lodash.isObject(service)){
     service.utils = {

@@ -25,6 +25,7 @@ module.exports = async config => {
   transports = await Promise.props(transports)
 
   return Promise.mapSeries(compile(config),config=>{
+    console.log('loading',config.require)
     return Service(require.main.require(config.require),config,transports)
   })
 }

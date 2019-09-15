@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 require('dotenv').config()
-const { parseEnv } = require('../libs/utils')
+const {parseEnv}  = require('../libs/parseEnv')
 const args = require('minimist')(process.argv.slice(2))
 const assert = require('assert')
 const lodash = require('lodash')
@@ -19,9 +19,9 @@ let config = lodash.reduce(
   {}
 )
 
-const env = parseEnv(process.env)
+const env = parseEnv(process.env,process.env.envRegex)
 //do not try to merge env if pm2 is detected because it pollutes env space
-if (!env.pm_id) config = lodash.merge(config, env)
+config = lodash.merge(config, env)
 
 App(config)
   .then(x => {

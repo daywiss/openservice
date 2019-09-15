@@ -4,8 +4,9 @@ const lodash = require('lodash')
 const highland = require('highland')
 
 module.exports = (channel = 'responses') => {
-  const stream = highland()
-  stream.setMaxListeners(0)
+  const listener = highland()
+  listener.setMaxListeners(0)
+  listener.resume()
 
   const listen = (path, cb) => {
     const filter = { channel }
@@ -15,10 +16,9 @@ module.exports = (channel = 'responses') => {
       filter.path = path
     }
 
-    const result = highland()
-
     const f = objectFilter(filter)
-    stream.on('data', async data => {
+
+    listener.on('data', async data => {
       if (f(data)) {
         if (cb) {
           try {
@@ -28,6 +28,24 @@ module.exports = (channel = 'responses') => {
             process.exit(1)
           }
         }
+      }
+    })
+  }
+
+  const stream = path =>{
+    const filter = { channel }
+
+    if (path && path.length) {
+      path = lodash.castArray(path)
+      filter.path = path
+    }
+
+    const f = objectFilter(filter)
+
+    const result = highland()
+
+    listener.on('data', data => {
+      if (f(data)) {
         result.write(data)
       }
     })
@@ -35,7 +53,8 @@ module.exports = (channel = 'responses') => {
     return result
   }
 
-  stream.listen = listen
+  listener.listen = listen
+  listener.stream = stream
 
-  return stream
+  return listener
 }

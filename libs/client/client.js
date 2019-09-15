@@ -7,7 +7,7 @@ const assert = require('assert')
 const moment = require('moment')
 
 module.exports = (config, transport, service) => {
-  const {name,old=10000,emit='emit',listen='listen'} = config
+  const {name,old=10000,emit='emit',listen='listen',stream='stream'} = config
   assert(name, 'requires name')
   assert(transport, 'requires transport')
 
@@ -60,6 +60,9 @@ module.exports = (config, transport, service) => {
     switch (fun) {
       case emit:
         return emitStream.call(prefix, ...args)
+      case stream:
+        console.log('stream',prefix,...args)
+        return listenStream.stream(prefix, ...args)
       case listen:
         return listenStream.listen(prefix, ...args)
       default:

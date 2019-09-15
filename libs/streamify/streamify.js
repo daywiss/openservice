@@ -26,8 +26,13 @@ function Wrap(name, methods, cb) {
           .doto(x => {
             cb('streams', x, event)
           })
+          .errors((err,next)=>{
+            next(err)
+            resolve.destroy()
+          })
           .done(() => {
             cb('streams', 'terminate!', event)
+            resolve.destroy()
           })
       } else {
         cb('responses', resolve, event)

@@ -1,6 +1,6 @@
 {
   "name": "openservice",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Flexible easy to use microservice framework on streams",
   "main": "index.js",
   "author": "david <daywiss@gmail.com>",

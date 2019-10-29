@@ -17,25 +17,45 @@ Quick reference for getting started.
 ```js
 //in service.js
 module.exports = async (config,services,emit)=>{
+  //initialize service here...
+
+  //return service api
   return {
+    someServiceMethod(){
+      return 'hello world'
+    }
   }
 }
 
 ```
 ### Config Definition
+An example configuration that shows some basic setup.
 ```js
 //in config.js
 module.exports = {
+  //the name of the service, used for logging
   name:'quickstart',
-  paths:[process.cwd()],
+  //define all paths where service files can be found
+  paths:[
+    process.cwd(),
+    __dirname
+  ],
+  //defines which services to start and in what order
+  //service startup is blocking and will fail the entire app if
+  //one service fails
   start:[
     'quickstart.service'
   ],
+  //defines your named transports
   transports:{
+    //the name of your local transport is the key 'local'
     local:{
+      //open service includes a local stream transport if your app is completely contained as a single process
       require:'openservice/transports/local'
     },
+    //the name of your nats streaming transport is the key 'nats'
     natss:{
+      //openservices has a basic nats streaming transport for multi process architectures
       require:'openservice/transports/natss'
       config:{
         clusterid:'test-cluster',
@@ -43,11 +63,18 @@ module.exports = {
       }
     }
   },
+  //quickstart is the namespace of this group of services
+  //services must belong to a namespace. 
   quickstart:{
+    //service is the name of this service, it would be accessed like quickstart.service
     service:{
+      //uses a file called service.js
       require:'service',
+      //uses the local transport
       transport:'local',
+      //has no service dependencies (clients)
       clients:[],
+      //has no injected configuration
       config:{},
     }
   }
@@ -55,7 +82,8 @@ module.exports = {
 ```
 
 ### Secret ENV
-In .env file or environment variables
+In .env file or environment variables. Open service uses lodash.set/get notation
+for creating a json object from environment variables which get merged into your config.
 ```
 transports.natss.config.url=nats://localhost:4223
 quickstart.service.config.secret=12345

@@ -7,7 +7,7 @@ const assert = require('assert')
 const moment = require('moment')
 
 module.exports = (config, transport, service) => {
-  const {name,old=10000,emit='emit',listen='listen',stream='stream'} = config
+  const {name,old=10000,emit='_emit',listen='_listen',stream='_stream',on='on'} = config
   assert(name, 'requires name')
   assert(transport, 'requires transport')
 
@@ -53,25 +53,18 @@ module.exports = (config, transport, service) => {
 
     if(type !== 'apply') return 
 
-    if(path.length === 1 && path[0] === 'on'){
+    if(path.length === 1 && (path[0] === on || path[0] === listen)){
       return listenStream.listen(...args)
     }
 
-    switch (fun) {
-      case emit:
-        return emitStream.call(prefix, ...args)
-      case stream:
-        console.log('stream',prefix,...args)
-        return listenStream.stream(prefix, ...args)
-      case listen:
-        return listenStream.listen(prefix, ...args)
-      default:
-        return callStream.call(path, ...args)
-        // try {
-          // console.log('calling',name,path)
-        // } catch (e) {
-        //   console.log(e)
-        // }
+    if(path.length === 1 && path[0] === stream){
+      return listenStream.stream(...args)
     }
+
+    if(path.length === 1 && path[0] === emit){
+      return emitStream.call(...args)
+    }
+
+    return callStream.call(path, ...args)
   })
 }

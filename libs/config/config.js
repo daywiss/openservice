@@ -5,9 +5,8 @@ const Schemas = require('./schemas')
 const Path = require('path')
 
 
-module.exports = config =>{
+module.exports = (config={}) =>{
   const keys = {
-    keys:'keys',
     start:'start',
     transports:'transports',
     transport:'transport',
@@ -17,13 +16,8 @@ module.exports = config =>{
     path:'path',
     name:'name',
     cwd:'cwd',
+    ...config,
   }
-
-  // const schemas = Schemas(keys)
-
-  // const validateConfig = Validate(schema.Config)
-  // const validateTransport = Validate(schema.Transport)
-  // const validateService = Validate(schema.Service)
 
   function makeDefaults(config,previous){
     return lodash.defaultsDeep({

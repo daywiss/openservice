@@ -9,6 +9,7 @@ module.exports = (config,services,emit) => {
     ]
     emit(['deep','change'], result)
     emit('change', result)
+    return result
   }
 }
 

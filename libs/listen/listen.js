@@ -12,7 +12,7 @@ module.exports = (channel = 'responses') => {
     const filter = { channel }
 
     if (path && path.length) {
-      path = lodash.castArray(path)
+      path = lodash.toPath(path)
       filter.path = path
     }
 

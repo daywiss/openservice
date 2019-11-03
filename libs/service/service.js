@@ -7,7 +7,7 @@ const Client = require('../client')
 const Server = require('../server')
 const { timeout, RelativePath } = require('../utils')
 
-module.exports = async (Service,config={},transports)=>{
+module.exports = async (Service,config={},transports,osConfig={})=>{
 
   const {timeoutms=60000} = config
   assert(config.path !== undefined, 'service requires path')
@@ -30,7 +30,7 @@ module.exports = async (Service,config={},transports)=>{
       ' in ' +
       config.name,
     )
-    lodash.set(result, path, Client({name:client.name}, transport, config.name))
+    lodash.set(result, path, Client({...osConfig,name:client.name}, transport, config.name))
     return result
   },{})
 
@@ -72,5 +72,5 @@ module.exports = async (Service,config={},transports)=>{
   const server = Server(config, service, transport)
   events.on('event',args=> server.emit(...args))
   
-  return Client(config, transport, 'Open Service')
+  return Client({...osConfig,...config}, transport, 'Open Service')
 }

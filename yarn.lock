@@ -102,6 +102,11 @@ glob@~7.1.4:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
+google-protobuf@^3.9.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/google-protobuf/-/google-protobuf-3.10.0.tgz#f36171128090615049f9b0e42252b1a10a4bc534"
+  integrity sha512-d0cMO8TJ6xtB/WrVHCv5U81L2ulX+aCD58IljyAN6mHwdHHJ2jbcauX5glvivi3s3hx7EYEo7eUA9WftzamMnw==
+
 has-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.0.0.tgz#ba1a8f1af2a0fc39650f5c850367704122063b44"
@@ -179,6 +184,28 @@ moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
+
+nats@^1.3.0:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/nats/-/nats-1.3.2.tgz#e80c8fbb31f9e664c6293a7f444d846b9e7659ef"
+  integrity sha512-4BVDo3aT+x+ac/RgW1GXBLkjS7iXYrmQymFgQ33/bYn8VuU65M8gd7yxra+7Dr5J3RRN6+Bt0KhoG9ugzmL0rQ==
+  dependencies:
+    nuid "^1.0.0"
+    ts-nkeys "^1.0.8"
+
+node-nats-streaming@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/node-nats-streaming/-/node-nats-streaming-0.2.6.tgz#c5db3c58a034a5cb61a284691b1fe19b60bc4c4d"
+  integrity sha512-UTS/tHextk+qdXl0fiSKFPU12eWsRkeRzbzo1zk6ZbXu/PnszKtnSwzxhVRYveU7VjDebYsAFpde1MjC5Y3Nvw==
+  dependencies:
+    google-protobuf "^3.9.0"
+    nats "^1.3.0"
+    nuid "^1.1.0"
+
+nuid@^1.0.0, nuid@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/nuid/-/nuid-1.1.0.tgz#e0c5746350a25562f58283197f34c50861f44675"
+  integrity sha512-C/JdZ6PtCqKsCEs4ni76nhBsdmuQgLAT/CTLNprkcLViDAnkk7qx5sSA8PVC2vmSsdBlSsFuGb52v6pwn1oaeg==
 
 object-inspect@~1.6.0:
   version "1.6.0"
@@ -258,6 +285,18 @@ through@~2.3.4, through@~2.3.8:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
+
+ts-nkeys@^1.0.8:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/ts-nkeys/-/ts-nkeys-1.0.14.tgz#3d4b61b6aa4fa952c649ecfafacdce1a4831ba57"
+  integrity sha512-WIPykDjpnOvVn5zDNv1uu6o1+Uj+CXaQOM4Od6k2SRiUF4rmhjk7nAHC0mGrWjj0GxeQnwKQv++65qtm1O6kiA==
+  dependencies:
+    tweetnacl "^1.0.1"
+
+tweetnacl@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.1.tgz#2594d42da73cd036bd0d2a54683dd35a6b55ca17"
+  integrity sha512-kcoMoKTPYnoeS50tzoqjPY3Uv9axeuuFAZY9M/9zFnhoVvRfxz9K29IMPD7jGmt2c8SW7i3gT9WqDl2+nV7p4A==
 
 util-deprecate@^1.0.2:
   version "1.0.2"

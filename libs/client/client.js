@@ -6,8 +6,9 @@ const lodash = require('lodash')
 const assert = require('assert')
 const moment = require('moment')
 
-module.exports = (config, transport, service) => {
-  const {name,old=10000,emit='_emit',listen='_listen',stream='_stream',on='on'} = config
+module.exports = (config={}, transport, service) => {
+  const {name,old=10000,emit='emit',listen='listen',stream='stream',on='on'} = config
+
   assert(name, 'requires name')
   assert(transport, 'requires transport')
 

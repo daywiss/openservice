@@ -4,6 +4,8 @@ module.exports = {
     'global',
     'advanced',
   ],
+  openservice:{
+  },
   config:{
     test:'test',
   },
@@ -38,10 +40,17 @@ module.exports = {
     start:[
       'transactions',
       'transactions.wallets',
+      'nested',
     ],
     config:{
+      //random configs
       advanced:true,
       global:false,
+    },
+    nested:{
+      transport:'natss',
+      require:'nested',
+      clients:['transactions'],
     },
     transactions:{
       transport:'natss',

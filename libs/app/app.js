@@ -12,8 +12,11 @@ module.exports = async config => {
   //allows user to load external files easier
   if(config.paths) require.main.paths = [...require.main.paths, ...lodash.castArray(config.paths)]
 
+  //create a defaul object for openservice meta options
+  const osConfig = lodash.merge(config.openservice,{})
+
   const result = []
-  const {compile} = Config(config.config)
+  const {compile} = Config(osConfig)
 
   let transports = lodash.mapValues(config.transports,(value,key)=>{
     assert(value.require,`Transport ${key} missing "require" field to specify file`)
@@ -24,9 +27,9 @@ module.exports = async config => {
 
   transports = await Promise.props(transports)
 
-  return Promise.mapSeries(compile(config),config=>{
-    console.log('loading',config.require)
-    return Service(require.main.require(config.require),config,transports)
+  return Promise.mapSeries(compile(config),compiledConfig=>{
+    console.log('loading',config.name,compiledConfig.require)
+    return Service(require.main.require(compiledConfig.require),compiledConfig,transports,osConfig)
   })
 }
 

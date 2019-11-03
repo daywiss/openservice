@@ -8,11 +8,11 @@
   "bin": {
     "openservice": "./bin/openservice.js"
   },
-  "bugs":{
-    "url":"https://github.com/daywiss/openservice/issues"
+  "bugs": {
+    "url": "https://github.com/daywiss/openservice/issues"
   },
-  "homepage":{
-    "url":"https://github.com/daywiss/openservice"
+  "homepage": {
+    "url": "https://github.com/daywiss/openservice"
   },
   "repository": {
     "type": "git",
@@ -38,6 +38,7 @@
     "lodash": "^4.17.15",
     "minimist": "^1.2.0",
     "moment": "^2.24.0",
+    "node-nats-streaming": "^0.2.6",
     "stack-utils": "^1.0.2",
     "uuid": "^3.3.2"
   }

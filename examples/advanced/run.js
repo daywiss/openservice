@@ -13,6 +13,7 @@ App(config).then(async ([users,transactions,wallets,nested,actions,express])=>{
   })
   await wallets.create({id:'a',balance:1})
   await wallets.create({id:'b',balance:0})
+  console.log(await wallets.stream())
   // console.log('transactions',await transactions('a','b',.5))
   console.log('nested',await nested('a','b',.5))
   // console.log(await wallets.values())

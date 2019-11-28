@@ -40,6 +40,9 @@ module.exports = config => {
       wallet.balance += amount
       return set(wallet)
     },
+    stream(){
+      return 'stream!'
+    },
     withdraw(id,amount){
       const wallet = get(id)
       assert(amount > 0,'withdraw amount must be positive')

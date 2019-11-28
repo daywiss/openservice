@@ -5,6 +5,7 @@ module.exports = {
     'advanced',
   ],
   openservice:{
+    stream:'_stream'
   },
   config:{
     test:'test',

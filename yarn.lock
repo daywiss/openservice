@@ -224,6 +224,13 @@ once@^1.3.0:
   dependencies:
     wrappy "1"
 
+openenv@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/openenv/-/openenv-0.0.1.tgz#f2e4515ff51aa10e10f44e9cb82355cc05c46f35"
+  integrity sha512-s9zTaOw9c8yFVNuhPnkZLhP0coRfdngcRHfvMCXshzNAy4RT1juxO4hCskhpJIF4On1Rq3Fs/D3mhogyxUuRdw==
+  dependencies:
+    lodash "^4.17.15"
+
 path-is-absolute@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"

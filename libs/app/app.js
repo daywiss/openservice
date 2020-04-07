@@ -28,7 +28,10 @@ module.exports = async config => {
   transports = await Promise.props(transports)
 
   return Promise.mapSeries(compile(config),compiledConfig=>{
-    console.log('loading',config.name,compiledConfig.require)
+    console.log('loading',compiledConfig.name)
+    if(lodash.isFunction(compiledConfig.require)){
+      return Service(compiledConfig.require,compiledConfig,transports,osConfig)
+    }
     return Service(require.main.require(compiledConfig.require),compiledConfig,transports,osConfig)
   })
 }

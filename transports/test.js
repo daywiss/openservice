@@ -1,3 +1,5 @@
+require('dotenv').config()
+const config = require('openenv')(process.env)
 const test = require('tape')
 const Local = require('./local')
 const Natss = require('./natss')
@@ -20,14 +22,26 @@ test('transport',t=>{
     })
   })
   t.test('natss',t=>{
+    let server, client
     t.test('init',async t=>{
-      transport = await Natss({
-        durableName:'test',
-        clusterid:'test-cluster',
-        clientid:'test',
-        url:'localhost',
+      server = await Natss({...config.natss,clientid:'test-server'})
+      t.ok(server)
+      t.end()
+    })
+    t.test('publish',async t=>{
+      await server.publish('a','test').write('hello')
+      t.end()
+    })
+    t.test('subscribe',async t=>{
+      t.plan(1)
+      client = await Natss({...config.natss,durableName:'test',clientid:'test-client'})
+      await client.subscribe('a','test').each(x=>{
+        t.equal(x,'hello')
       })
-      t.ok(transport)
+    })
+    t.test('close',async t=>{
+      await client.transport.disconnect()
+      await server.transport.disconnect()
       t.end()
     })
   })

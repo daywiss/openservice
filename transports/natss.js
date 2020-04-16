@@ -37,11 +37,12 @@ function Natss(config,emit=x=>x){
   function subscribe(channel, durableName) {
     assert(channel, 'requires channel')
     var opts = stan.subscriptionOptions()
-    opts.setStartTime(now)
 
     if (durableName) {
       opts.setDeliverAllAvailable()
       opts.setDurableName(durableName)
+    }else{
+      opts.setStartTime(now)
     }
 
     const sub = stan.subscribe(channel, opts)
@@ -113,6 +114,7 @@ module.exports = async config => {
   return {
     publish,
     subscribe,
+    transport,
   }
 }
 

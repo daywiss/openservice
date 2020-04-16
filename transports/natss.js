@@ -40,7 +40,7 @@ function Natss(config,emit=x=>x){
     opts.setStartTime(now)
 
     if (durableName) {
-      opts.deliverAllAvailable()
+      opts.setDeliverAllAvailable()
       opts.setDurableName(durableName)
     }
 

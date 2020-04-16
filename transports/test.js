@@ -1,5 +1,6 @@
 const test = require('tape')
 const Local = require('./local')
+const Natss = require('./natss')
 
 test('transport',t=>{
   let transport
@@ -18,4 +19,17 @@ test('transport',t=>{
       transport.publish('test','test').write(msg)
     })
   })
+  t.test('natss',t=>{
+    t.test('init',async t=>{
+      transport = await Natss({
+        durableName:'test',
+        clusterid:'test-cluster',
+        clientid:'test',
+        url:'localhost',
+      })
+      t.ok(transport)
+      t.end()
+    })
+  })
 })
+

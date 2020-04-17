@@ -37,10 +37,11 @@ function Natss(config,emit=x=>x){
   function subscribe(channel, durableName) {
     assert(channel, 'requires channel')
     var opts = stan.subscriptionOptions()
+    const {durable=false} = config
 
-    if (durableName) {
-      opts.setDeliverAllAvailable()
+    if (durable) {
       opts.setDurableName(durableName)
+      opts.setDeliverAllAvailable()
     }else{
       opts.setStartTime(now)
     }
@@ -103,11 +104,13 @@ module.exports = async config => {
     return pub
   }
 
-  function subscribe(service, channel) {
+  function subscribe(service, channel, origin) {
     const id = [service, channel].join('.')
-    if (subscribers.has(id)) return subscribers.get(id).observe()
-    const sub = transport.subscribe(id, config.durableName)
-    subscribers.set(id, sub)
+    const sid= [service,channel,origin].join('!')
+    //each originating client gets their own subscription to a service channel
+    if (subscribers.has(sid)) return subscribers.get(sid).observe()
+    const sub = transport.subscribe(id, origin)
+    subscribers.set(sid, sub)
     return sub
   }
 

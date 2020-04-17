@@ -15,7 +15,7 @@ module.exports = (config, service, transport) => {
   assert(service, 'requires service')
   assert(transport, 'requires transport')
 
-  const requests = transport.subscribe(name, 'requests')
+  const requests = transport.subscribe(name, 'requests', name)
   const responses = transport.publish(name, 'responses')
   const streams = transport.publish(name, 'streams')
   const errors = transport.publish(name, 'errors')

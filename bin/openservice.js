@@ -7,8 +7,11 @@ const assert = require('assert')
 const lodash = require('lodash')
 const App = require('../libs/app')
 const Path = require('path')
+const openEnv = require('openenv')
 
 const paths = args._ || []
+// reference for env regex filtering
+// const isLower = '^[a-z0-9]'
 
 let config = lodash.reduce(
   paths,
@@ -19,8 +22,8 @@ let config = lodash.reduce(
   {}
 )
 
-const env = parseEnv(process.env,process.env.envRegex)
-//do not try to merge env if pm2 is detected because it pollutes env space
+const env = openEnv(process.env,{regex:process.env.envRegex})
+
 config = lodash.merge(config, env)
 
 App(config)

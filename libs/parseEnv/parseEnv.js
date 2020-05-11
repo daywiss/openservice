@@ -4,7 +4,6 @@ exports.isEnvArray = (value = '') => {
   return value.toString().includes(',')
 }
 
-const isLower = '^[a-z0-9]'
 
 exports.IsEnvParsable = regex => key => {
   return regex.test(key)

@@ -60,7 +60,7 @@ module.exports = {
       clients:['wallets'],
       wallets:{
         transport:'local',
-        require:'./wallets',
+        require:'wallets',
         config:{ },
         clients:[]
       },

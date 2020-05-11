@@ -67,28 +67,6 @@ exports.difference = (oldState, newState) => {
   })
 }
 
-// exports.makeCalls = (streams) =>{
-//   return lodash.reduce(streams,(result,stream,name)=>{
-//     result[name] = Calls(stream)
-//     return result
-//   },{})
-// }
-
-// exports.makeEmits = (streams) =>{
-//   return lodash.reduce(streams,(result,stream,name)=>{
-//     result[name] = Emits(stream)
-//     return result
-//   },{})
-// }
-
-// exports.makeListen = (streams)=>{
-//   return lodash.reduce(streams,(result,stream,name)=>{
-//     result[name] = Listen(stream)
-//     return result
-//   },{})
-// }
-
-
 exports.flattenJson = (json = {}, path = [], result = []) => {
   if (!lodash.isObject(json) || lodash.isArray(json)) {
     return result.push(path.join('.') + '=' + json)

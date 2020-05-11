@@ -4,15 +4,16 @@ const Promise = require('bluebird')
 const assert = require('assert')
 const Service = require('../service')
 const Config = require('../config')
+const Path = require('path')
 
 
 module.exports = async config => {
   //sets directories to search for files, 
   //researched from https://gist.github.com/branneman/8048520
   //allows user to load external files easier
-  if(config.paths) require.main.paths = [...require.main.paths, ...lodash.castArray(config.paths)]
+  if(config.paths) require.main.paths = [...lodash.castArray(config.paths),...require.main.paths]
 
-  //create a defaul object for openservice meta options
+  //create a default object for openservice meta options
   const osConfig = lodash.merge(config.openservice,{})
 
   const result = []

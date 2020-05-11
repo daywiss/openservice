@@ -13,15 +13,16 @@ You must have a configuration file, env, or json and your service code. See the 
 ## Quick Start
 Quick reference for getting started.
 ### Service Definition
+Services are designed as closures. Return your services api as an object of functions.
 
 ```js
-//in service.js
+//in helloWorld.js
 module.exports = async (config,services,emit)=>{
   //initialize service here...
 
   //return service api
   return {
-    someServiceMethod(){
+    sayHello(){
       return 'hello world'
     }
   }
@@ -34,7 +35,7 @@ An example configuration that shows some basic setup.
 //in config.js
 module.exports = {
   //the name of the service, used for logging
-  name:'quickstart',
+  name:'helloworld',
   //define all paths where service files can be found
   paths:[
     process.cwd(),
@@ -44,7 +45,7 @@ module.exports = {
   //service startup is blocking and will fail the entire app if
   //one service fails
   start:[
-    'quickstart.service'
+    'helloworld.service'
   ],
   //defines your named transports
   transports:{
@@ -53,23 +54,14 @@ module.exports = {
       //open service includes a local stream transport if your app is completely contained as a single process
       require:'openservice/transports/local'
     },
-    //the name of your nats streaming transport is the key 'nats'
-    natss:{
-      //openservices has a basic nats streaming transport for multi process architectures
-      require:'openservice/transports/natss'
-      config:{
-        clusterid:'test-cluster',
-        clientid:'quickstart',
-      }
-    }
   },
-  //quickstart is the namespace of this group of services
+  //helloworld is the namespace of this group of services
   //services must belong to a namespace. 
-  quickstart:{
-    //service is the name of this service, it would be accessed like quickstart.service
+  helloworld:{
+    //service is the name of this service, it would be accessed like helloworld.service
     service:{
-      //uses a file called service.js
-      require:'service',
+      //uses a file called helloWorld.js, you are telling openservice how to find the file
+      require:'helloWorld',
       //uses the local transport
       transport:'local',
       //has no service dependencies (clients)
@@ -85,8 +77,7 @@ module.exports = {
 In .env file or environment variables. Open service uses lodash.set/get notation
 for creating a json object from environment variables which get merged into your config.
 ```
-transports.natss.config.url=nats://localhost:4223
-quickstart.service.config.secret=12345
+helloworld.service.config.secret=12345
 ```
 
 ### Starting Service
@@ -119,6 +110,14 @@ years of experience which give you the flexibility to create powerful applicatio
 keeping the complexity low. OpenService allows you to write code in natural js with async/await, callbacks, event emitters 
 and streams. Ultimately we want to remove the overhead of designing a good architecture and lets you focus on
 writing application code. 
+
+## How Does It Work?
+Under the hood, at the transport layer, requests between services are broken up into events streams on 4 channels.
+Requests, Responses, Errors and Streams. Every service writes to its own private channels.
+Services which need to communicate can tap into these channels as a read only client, and write to
+the Requests channel. There is some utilities to convert these channels into what looks like a regular
+Promise based api, so as a developer you write code as if these services are just promise based libraries
+that have been injected into your scope.
 
 ## Getting Started
 ### Create A Service

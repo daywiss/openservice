@@ -46,7 +46,11 @@ function Wrap(name, methods, cb) {
         cb('responses', resolve, event)
       }
     } catch (reject) {
-      cb('errors', utils.parseError(reject), event)
+      if(reject instanceof Error){
+        cb('errors', utils.parseError(reject), event)
+      }else{
+        cb('errors', reject, event)
+      }
     }
   }
 }

@@ -13,7 +13,7 @@ module.exports = async (Service,config={},transports,osConfig={})=>{
   assert(config.path !== undefined, 'service requires path')
   assert(transports,'requires transports')
   assert(Service,'Service not found for: ' + config.path)
-  assert(lodash.isFunction(Service),'Service is not a function: ' + config.path)
+  assert(lodash.isFunction(Service),`Service is not a function: ${config.path} (${config.require})`)
 
   // const clientNames = lodash.castArray(config.clients || [])
   const servicePath = config.path

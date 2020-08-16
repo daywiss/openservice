@@ -1,6 +1,6 @@
 {
   "name": "openservice",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Flexible easy to use microservice framework on streams",
   "main": "index.js",
   "author": "david <daywiss@gmail.com>",
@@ -34,13 +34,13 @@
     "bluebird": "^3.5.5",
     "dotenv": "^8.0.0",
     "fastest-validator": "^0.6.17",
-    "highland": "^2.13.4",
-    "lodash": "^4.17.15",
-    "minimist": "^1.2.3",
+    "highland": "^2.13.5",
+    "lodash": "^4.17.20",
+    "minimist": "^1.2.5",
     "moment": "^2.24.0",
     "node-nats-streaming": "^0.2.6",
+    "nuid": "^1.1.4",
     "openenv": "^0.0.1",
-    "stack-utils": "^1.0.2",
-    "uuid": "^3.3.2"
+    "stack-utils": "^1.0.2"
   }
 }

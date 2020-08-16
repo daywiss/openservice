@@ -8,14 +8,16 @@ function Natss(config,emit=x=>x){
   const natss = require('node-nats-streaming')
   let stan = null
   const now = Date.now()
+  // may add batch with time or count at some point, but not quite yet
+  const {durable=false, batchCount=1,batchTime=1, parallel=100} = config
   function publish(channel) {
     assert(channel, 'requires channel')
     const stream = highland()
 
     let last
     stream
+      .batchWithTimeOrCount(batchTime,batchCount)
       .map(JSON.stringify)
-      // .doto(console.log)
       .map(data => {
         return new Promise((res, rej) => {
           last = data
@@ -26,6 +28,8 @@ function Natss(config,emit=x=>x){
         })
       })
       .flatMap(highland)
+      // .map(highland)
+      // .parallel(parallel)
       .errors((err, next) => {
         if (err) emit('error',err) 
         next()
@@ -37,8 +41,8 @@ function Natss(config,emit=x=>x){
   function subscribe(channel, durableName) {
     assert(channel, 'requires channel')
     var opts = stan.subscriptionOptions()
-    const {durable=false} = config
 
+    opts.setManualAckMode(true)
     if (durable) {
       opts.setDurableName(durableName)
       opts.setDeliverAllAvailable()
@@ -51,8 +55,10 @@ function Natss(config,emit=x=>x){
     return (
       highland('message', sub)
         .map(msg => {
+          msg.ack()
           return JSON.parse(msg.getData())
         })
+        .flatten()
         // .doto(console.log)
         .errors((err, next) => {
           if (err) emit('error',err) 
@@ -108,7 +114,7 @@ module.exports = async config => {
     const id = [service, channel].join('.')
     const sid= [service,channel,origin].join('!')
     //each originating client gets their own subscription to a service channel
-    if (subscribers.has(sid)) return subscribers.get(sid).observe()
+    if (subscribers.has(sid)) return subscribers.get(sid)
     const sub = transport.subscribe(id, origin)
     subscribers.set(sid, sub)
     return sub
@@ -118,6 +124,7 @@ module.exports = async config => {
     publish,
     subscribe,
     transport,
+    close:transport.disconnect,
   }
 }
 

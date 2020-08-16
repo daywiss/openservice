@@ -5,7 +5,7 @@ module.exports = async config => {
   const publishers = new Map()
 
   function publish(service, channel) {
-    const id = [service, channel].join('.')
+    const id = service
     if (publishers.has(id)) return publishers.get(id)
     const pub = highland()
     pub.resume()
@@ -14,7 +14,7 @@ module.exports = async config => {
   }
 
   function subscribe(service, channel) {
-    return publish(service,channel).observe()
+    return publish(service,channel).observe().filter(x=>x.channel === channel)
   }
 
   return {

@@ -1,7 +1,7 @@
-const uuid = require('uuid/v4')
+const uuid = require('nuid')
 module.exports = props => {
   return {
-    id: uuid(),
+    id: uuid.next(),
     channel: '',
     path: [],
     args: [],

@@ -7,7 +7,7 @@ const assert = require('assert')
 const moment = require('moment')
 
 module.exports = (config={}, transport, service) => {
-  const {name,old=10000,emit='emit',listen='listen',stream='stream',on='on'} = config
+  const {name,old=10000,emit='emit',listen='listen',stream='stream',on='on',parallel=1} = config
 
   assert(name, 'requires name')
   assert(transport, 'requires transport')
@@ -22,16 +22,23 @@ module.exports = (config={}, transport, service) => {
   assert(streams, 'requires streams stream')
   assert(errors, 'requires errors stream')
 
-  const callStream = Calls()
-  const emitStream = Emits()
+
+  const emitStream = Emits('requests',event=>requests.write(event))
   const listenStream = Listen()
 
-  emitStream.pipe(requests)
-  callStream.pipe(requests)
+  const callStream = Calls('requests',event=>requests.write(event))
 
-  responses.pipe(callStream)
-  streams.pipe(callStream)
-  errors.pipe(callStream)
+  responses
+    .map(callStream.respond)
+    .resume()
+    
+  streams
+    .map(callStream.respond)
+    .resume()
+
+  errors
+    .map(callStream.respond)
+    .resume()
 
   responses.observe().pipe(listenStream)
 

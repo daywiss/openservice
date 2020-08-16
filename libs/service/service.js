@@ -1,6 +1,5 @@
 const assert = require('assert')
 const lodash = require('lodash')
-const moment = require('moment')
 const Events = require('events')
 
 const Client = require('../client')

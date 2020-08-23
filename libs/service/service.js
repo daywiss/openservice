@@ -8,6 +8,8 @@ const { timeout, RelativePath } = require('../utils')
 
 module.exports = async (Service,config={},transports,osConfig={})=>{
 
+  console.log({config,osConfig})
+
   const {timeoutms=60000} = config
   assert(config.path !== undefined, 'service requires path')
   assert(transports,'requires transports')
@@ -68,7 +70,7 @@ module.exports = async (Service,config={},transports,osConfig={})=>{
 
   const transport = lodash.get(transports,config.transport)
   assert(transport,'Transport is not defined: ' + config.transport)
-  const server = Server(config, service, transport)
+  const server = Server({...osConfig,...config}, service, transport)
   events.on('event',args=> server.emit(...args))
   
   return Client({...osConfig,...config}, transport, 'Open Service')

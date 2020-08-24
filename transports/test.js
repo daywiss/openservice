@@ -1,46 +1,44 @@
-require('dotenv').config()
-const config = require('openenv')(process.env)
-const test = require('tape')
-const Local = require('./local')
-const LocalSimple = require('./local-simple')
-const Natss = require('./natss')
+require("dotenv").config();
+const test = require("tape");
+const Local = require("./local");
+const LocalSimple = require("./local-simple");
 
-test('transport',t=>{
-  t.test('local-simple',t=>{
-    let transport
-    t.test('init',async t=>{
-      transport = await LocalSimple()
-      t.ok(transport)
-      t.end()
-    })
-    t.test('pub/sub',t=>{
+test("transport", (t) => {
+  t.test("local-simple", (t) => {
+    let transport;
+    t.test("init", async (t) => {
+      transport = await LocalSimple();
+      t.ok(transport);
+      t.end();
+    });
+    t.test("pub/sub", (t) => {
       const msg = {
-        service:'test',
-        channel:'test',
-      }
-      transport.subscribe('test','test').once('data',result=>{
-        t.equal(result,msg)
-        t.end()
-      })
-      transport.publish('test','test').write(msg)
-    })
-  })
-  t.test('local',t=>{
-    let transport
-    t.test('init',async t=>{
-      transport = await Local()
-      t.ok(transport)
-      t.end()
-    })
-    t.test('pub/sub',t=>{
-      const msg = 'test'
-      transport.subscribe('test','test').once('data',result=>{
-        t.equal(result,msg)
-        t.end()
-      })
-      transport.publish('test','test').write(msg)
-    })
-  })
+        service: "test",
+        channel: "test",
+      };
+      transport.subscribe("test", "test").once("data", (result) => {
+        t.equal(result, msg);
+        t.end();
+      });
+      transport.publish("test", "test").write(msg);
+    });
+  });
+  t.test("local", (t) => {
+    let transport;
+    t.test("init", async (t) => {
+      transport = await Local();
+      t.ok(transport);
+      t.end();
+    });
+    t.test("pub/sub", (t) => {
+      const msg = "test";
+      transport.subscribe("test", "test").once("data", (result) => {
+        t.equal(result, msg);
+        t.end();
+      });
+      transport.publish("test", "test").write(msg);
+    });
+  });
   // t.test('natss durable',t=>{
   //   let server, client
   //   t.test('init',async t=>{
@@ -87,5 +85,4 @@ test('transport',t=>{
   //     t.end()
   //   })
   // })
-})
-
+});

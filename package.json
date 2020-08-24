@@ -8,6 +8,21 @@
   "bin": {
     "openservice": "./bin/openservice.js"
   },
+  "scripts": {
+    "lint": "prettier **/*.js --write && eslint --fix **/*.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "libs/**/*.js": [
+      "eslint --ext .js",
+      "prettier --write",
+      "git add"
+    ]
+  },
   "bugs": {
     "url": "https://github.com/daywiss/openservice/issues"
   },
@@ -28,6 +43,10 @@
     "cqrs"
   ],
   "devDependencies": {
+    "eslint": "^7.7.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5",
     "tape": "^4.10.2"
   },
   "dependencies": {

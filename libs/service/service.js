@@ -8,8 +8,6 @@ const { timeout, RelativePath } = require('../utils')
 
 module.exports = async (Service,config={},transports,osConfig={})=>{
 
-  console.log({config,osConfig})
-
   const {timeoutms=60000} = config
   assert(config.path !== undefined, 'service requires path')
   assert(transports,'requires transports')

@@ -1,1 +1,1 @@
-module.exports = require('./streamify')
+module.exports = require("./streamify");

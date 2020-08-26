@@ -1,4 +1,4 @@
-module.exports = require('./service')
+module.exports = require("./service");
 
 //const assert = require('assert')
 //const lodash = require('lodash')

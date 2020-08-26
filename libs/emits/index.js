@@ -1,1 +1,1 @@
-module.exports = require('./emits')
+module.exports = require("./emits");

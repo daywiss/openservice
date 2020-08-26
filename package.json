@@ -9,7 +9,7 @@
     "openservice": "./bin/openservice.js"
   },
   "scripts": {
-    "lint": "prettier **/*.js --write && eslint --fix **/*.js"
+    "lint": "prettier ./libs/**/*.js --write && eslint --fix ./libs/**/*.js"
   },
   "husky": {
     "hooks": {

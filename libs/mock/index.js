@@ -1,1 +1,1 @@
-module.exports = require('./mock')
+module.exports = require("./mock");

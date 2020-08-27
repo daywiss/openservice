@@ -11,9 +11,9 @@ module.exports = (config, service, transport) => {
   assert(transport, "requires transport");
 
   const requests = transport.subscribe(name, "requests", name);
-  const responses = transport.publish(name, "responses");
-  const streams = transport.publish(name, "streams");
-  const errors = transport.publish(name, "errors");
+  const responses = transport.publish(name, "responses", name);
+  const streams = transport.publish(name, "streams", name);
+  const errors = transport.publish(name, "errors", name);
 
   const request = Streamify(config, service, (channel, msg) => {
     switch (channel) {

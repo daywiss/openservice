@@ -76,5 +76,6 @@ module.exports = async (Service, config = {}, transports, osConfig = {}) => {
   const server = Server({ ...osConfig, ...config }, service, transport);
   events.on("event", (args) => server.emit(...args));
 
-  return Client({ ...osConfig, ...config }, transport, "Open Service");
+  return server;
+  // return Client({ ...osConfig, ...config }, transport, "Open Service Client");
 };

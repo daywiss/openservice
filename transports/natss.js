@@ -57,13 +57,16 @@ function Natss(config, emit = (x) => x) {
     return (
       highland("message", sub)
         .map((msg) => {
+          // console.log(msg.getData())
           msg.ack();
           return JSON.parse(msg.getData());
         })
         .flatten()
         // .doto(console.log)
         .errors((err, next) => {
-          if (err) emit("error", err);
+          if (err){
+            emit("error", err);
+          }
           next();
         })
     );

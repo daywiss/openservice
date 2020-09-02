@@ -34,11 +34,9 @@ App(config)
   });
 
 process.on("unhandledRejection", function (err, promise) {
-  console.log(err, promise);
-  process.exit(1);
+  console.log(err);
 });
 
 process.on("uncaughtException", function (err) {
-  console.log(err.stack);
-  process.exit(1);
+  console.log(err);
 });

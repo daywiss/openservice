@@ -57,7 +57,7 @@ function Natss(config, emit = (x) => x) {
     return (
       highland("message", sub)
         .map((msg) => {
-          // console.log(msg.getData())
+          // console.log(durableName,msg.subscription.subject)
           msg.ack();
           return JSON.parse(msg.getData());
         })

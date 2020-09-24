@@ -33,7 +33,10 @@ module.exports = (channel = "requests", emit = (x) => x) => {
     switch (event.channel) {
       case "errors": {
         // event.args[0].stack += '\n' + cleanStack(call.stack)
-        call.rej(event.args[0]);
+        const err = new Error(event.args[0].message);
+        err.stack = event.args[0].stack;
+        err.code = event.args[0].code;
+        call.rej(err);
         calls.delete(event.id);
         return;
       }

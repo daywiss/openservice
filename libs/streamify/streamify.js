@@ -61,7 +61,7 @@ module.exports = function (config, methods, emit = (x) => x) {
         makeEmit("responses", resolve, event);
       }
     } catch (reject) {
-      if (reject instanceof Error) {
+      if (reject.message && reject.stack) {
         makeEmit("errors", utils.parseError(reject), event);
       } else {
         makeEmit("errors", reject, event);

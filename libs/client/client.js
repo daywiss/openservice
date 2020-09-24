@@ -68,7 +68,6 @@ module.exports = (config = {}, transport, service) => {
     if (path.length === 1 && path[0] === emit) {
       return emitStream.call(...args);
     }
-
     return callStream.call(path, ...args);
   });
 };

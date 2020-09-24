@@ -73,9 +73,23 @@ module.exports = async (Service, config = {}, transports, osConfig = {}) => {
 
   const transport = lodash.get(transports, config.transport);
   assert(transport, "Transport is not defined: " + config.transport);
-  const server = Server({ ...osConfig, ...config }, service, transport);
+  const serverConfig = { ...osConfig, ...config };
+  const server = Server(serverConfig, service, transport);
   events.on("event", (args) => server.emit(...args));
 
-  return server;
-  // return Client({ ...osConfig, ...config }, transport, "Open Service Client");
+  if (serverConfig.testing) {
+    return Client(
+      { ...osConfig, ...config },
+      transport,
+      `${config.name}-test-client`
+    );
+  } else {
+    return {
+      config: serverConfig,
+      transport,
+      service,
+      server,
+      clients,
+    };
+  }
 };

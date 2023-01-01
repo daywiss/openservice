@@ -9,12 +9,14 @@
     "openservice": "./bin/openservice.js"
   },
   "scripts": {
-    "lint": "prettier ./libs/**/*.js --write && eslint --fix ./libs/**/*.js"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "husky": "husky install",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "e2e": "ts-node node_modules/tape/bin/tape src/**/*.e2e.ts",
+    "test": "ts-node node_modules/tape/bin/tape src/*.test.ts src/**/*.test.ts",
+    "start": "ts-node",
+    "format": "prettier --write src",
+    "lint": "eslint ./**/*.ts --fix"
   },
   "lint-staged": {
     "libs/**/*.js": [
@@ -22,6 +24,11 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "bugs": {
     "url": "https://github.com/daywiss/openservice/issues"
@@ -43,23 +50,37 @@
     "cqrs"
   ],
   "devDependencies": {
-    "eslint": "^7.7.0",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5",
-    "tape": "^4.10.2"
+    "@types/node": "^18.11.10",
+    "@types/tape": "^4.13.2",
+    "@typescript-eslint/eslint-plugin": "^5.38.0",
+    "@typescript-eslint/parser": "^5.38.0",
+    "dotenv": "^16.0.2",
+    "eslint": "^8.21.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "prettier": "^2.7.1",
+    "tape": "^5.5.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
   },
   "dependencies": {
+    "@discordjs/rest": "^1.1.0",
+    "@types/highland": "^2.12.14",
+    "@types/lodash": "^4.14.182",
+    "@types/uuid": "^9.0.0",
     "bluebird": "^3.5.5",
-    "dotenv": "^8.0.0",
-    "fastest-validator": "^0.6.17",
+    "fastest-validator": "^1.15.0",
     "highland": "^2.13.5",
     "lodash": "^4.17.20",
     "minimist": "^1.2.5",
     "moment": "^2.24.0",
-    "node-nats-streaming": "^0.2.6",
+    "node-nats-streaming": "^0.3.2",
     "nuid": "^1.1.4",
     "openenv": "^0.0.1",
-    "stack-utils": "^1.0.2"
+    "stack-utils": "^2.0.6"
   }
 }
